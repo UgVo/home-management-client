@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuApiConnector">
+    <property name="title">
+     <string>Calendars</string>
+    </property>
+    <addaction name="action_GetCalendarsInfos"/>
+    <addaction name="action_GetCalendarEvents"/>
+    <addaction name="action_UpdateCalendarEvents"/>
+   </widget>
+   <addaction name="menuApiConnector"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="action_GetCalendarsInfos">
+   <property name="text">
+    <string>Get Calendars Infos</string>
+   </property>
+  </action>
+  <action name="action_GetCalendarEvents">
+   <property name="text">
+    <string>Get Calendar Events</string>
+   </property>
+  </action>
+  <action name="action_UpdateCalendarEvents">
+   <property name="text">
+    <string>Update Calendar Events</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
