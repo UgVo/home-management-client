@@ -1,6 +1,7 @@
 #ifndef HOME_MANAGEMENT_CLIENT_EVENT_H
 #define HOME_MANAGEMENT_CLIENT_EVENT_H
 
+#include <QCalendar>
 #include <QDateTime>
 #include <QJsonObject>
 #include <QString>
@@ -23,12 +24,14 @@ class Event {
     QDateTime startTime() const;
     QDateTime lastModified() const;
     QString uid() const;
-    QVector<Event> getReccurentInstances(QDate begin, QDate end);
-    Event copyToDate(QDateTime date);
+    QVector<Event> getReccurentInstances(QDate begin, QDate end) const;
+    Event copyToDate(QDateTime date) const;
 
     bool operator<(const Event &other) const;
 
    private:
+    bool fitCriteriaMonth() const;
+
     QString _content;
     QDateTime _creationDatetime;
     QDateTime _startTime;

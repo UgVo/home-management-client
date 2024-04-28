@@ -13,3 +13,33 @@ QDateTime parseDateTime(const QString datetime) {
     }
     return QDateTime();
 }
+
+QVector<QDateTime> getNextDaysOfWeekInMonth(QDateTime begin, int rankInWeek, int rankInMonth) {
+    QVector<QDateTime> res;
+    if (rankInWeek > 7 && rankInWeek < 1) return res;
+    if (rankInMonth > 5 && rankInMonth < 1) return res;
+    auto month = begin.date().month();
+    auto cal = QCalendar();
+    auto end =
+        QDateTime(QDate(begin.date().year(), month, cal.daysInMonth(month, begin.date().year())),
+                  begin.time(), begin.timeZone());
+    auto currentDateTime = begin;
+    while (currentDateTime <= end) {
+        if (cal.dayOfWeek(currentDateTime.date()) == rankInWeek) {
+            if (rankInMonth != 0) {
+                if (ceil(currentDateTime.date().day() / 7.0) == rankInMonth) {
+                    res.append(currentDateTime);
+                } else if (rankInMonth == -1 &&
+                           currentDateTime.date().day() >=
+                               cal.daysInMonth(month, begin.date().year()) - 7) {
+                    res.append(currentDateTime);
+                }
+            } else {
+                res.append(currentDateTime);
+            }
+        }
+        currentDateTime = currentDateTime.addDays(1);
+    }
+
+    return res;
+}

@@ -58,9 +58,9 @@ QDateTime RRules::until() const { return _until; }
 
 void RRules::setUntil(const QDateTime &&until) { _until = until; }
 
-QSet<RRules::Day> RRules::byDay() const { return _byDay; }
+std::set<RRules::Day> RRules::byDay() const { return _byDay; }
 
-void RRules::setByDay(const QSet<Day> &&byDay) { _byDay += byDay; }
+void RRules::setByDay(const std::set<Day> &&byDay) { _byDay.insert(byDay.begin(), byDay.end()); }
 
 void RRules::insertDay(const Day day) {
     if (day == Day::kNone) return;
@@ -77,9 +77,11 @@ void RRules::setDayRankInMonth(const int dayRank) {
     _dayRankInMonth = dayRank;
 }
 
-QSet<int> RRules::byMonthDay() const { return _byMonthDay; }
+std::set<int> RRules::byMonthDay() const { return _byMonthDay; }
 
-void RRules::setByMonthDay(const QSet<int> byMonthDay) { _byMonthDay += byMonthDay; }
+void RRules::setByMonthDay(const std::set<int> byMonthDay) {
+    _byMonthDay.insert(byMonthDay.begin(), byMonthDay.end());
+}
 
 void RRules::insertMonthDay(const int monthDay) {
     if (monthDay > 31 || monthDay < -1 || monthDay == 0) {

@@ -24,7 +24,8 @@ Event::~Event() {}
 
 QString Event::toString() const {
     return QString(
-               "Event content: %1\n  Created: %2\n  Start: %3\n  End: %4\n  Last modified: %5\n  "
+               "Event content: %1\n  Created: %2\n  Start: %3\n  End: %4\n  "
+               "Last modified: %5\n  "
                "uid: %6\n  rrule: %7\n")
         .arg(_content, _creationDatetime.toString(), _startTime.toString(), _endTime.toString(),
              _lastModified.toString(), _uid, _rrule.toString());
@@ -34,30 +35,34 @@ QDateTime Event::startTime() const { return _startTime; }
 QDateTime Event::lastModified() const { return _lastModified; }
 QString Event::uid() const { return _uid; }
 
-QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) {
+QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
     QDateTime begin(_begin, QTime(0, 0), _startTime.timeZone());
     QDateTime end(_end, QTime(23, 59), _startTime.timeZone());
+    QDateTime lowerBound(std::max(begin.date(), _startTime.date()), begin.time(), begin.timeZone());
     QVector<Event> res;
     if (!_rrule.isValid()) {
-        qDebug() << "RRule invalid";
+        qInfo() << "RRule invalid";
         return res;
     }
     if (_startTime > end) {
-        qDebug() << "start of event after end of time window";
+        qInfo() << "start of event after end of time window";
         return res;
     }
     if (_rrule.until() < begin && _rrule.until().isValid()) {
-        qDebug() << "end of reccurent events before start of time window";
+        qInfo() << "end of reccurent events before start of time window";
         return res;
     }
     auto dateLimit = _rrule.until().isValid() ? std::min<QDateTime>(_rrule.until(), end) : end;
-    auto count = _rrule.count() != 0 ? _rrule.count() - 1 : _startTime.daysTo(end) + 1;
+    auto count = _rrule.count() != 0 ? _rrule.count() : _startTime.daysTo(end) + 1;
+
     switch (_rrule.freq()) {
         case RRules::Freq::kDaily: {
+            count -= 1;  // Event day does fit the criterium of the reccurent
+                         // rule, as such it count in the total of events
             auto currentDate = _startTime;
             while (currentDate <= dateLimit && count > 0) {
                 currentDate = currentDate.addDays(_rrule.interval());
-                if (currentDate <= dateLimit && currentDate >= begin) {
+                if (currentDate <= dateLimit && currentDate > lowerBound) {
                     res.append(copyToDate(currentDate));
                 }
                 count--;
@@ -69,19 +74,23 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) {
             auto currentDate = _startTime.addDays(-(dayOfWeek - 1));
             auto byDay = _rrule.byDay();
 
+            // Conditions to remove main event date from the count
+            if (byDay.empty() || byDay.contains(RRules::mapNumDay[_startTime.date().dayOfWeek()])) {
+                count -= 1;
+            }
             while (currentDate <= dateLimit && count > 0) {
                 if (byDay.size()) {
                     for (auto it = byDay.begin(); it != byDay.end(); ++it) {
                         auto dateToAdd =
-                            currentDate.addDays(_rrule.interval() * 7 + RRules::mapDayNum[*it]);
-                        if (dateToAdd <= dateLimit && dateToAdd >= begin) {
+                            currentDate.addDays(_rrule.interval() * 7 + RRules::mapDayNum[*it] - 1);
+                        if (dateToAdd <= dateLimit && dateToAdd > lowerBound) {
                             res.append(copyToDate(dateToAdd));
                         }
                         count--;
                     }
                 } else {
                     auto dateToAdd = currentDate.addDays(_rrule.interval() * 7 + dayOfWeek - 1);
-                    if (dateToAdd <= dateLimit && dateToAdd >= begin) {
+                    if (dateToAdd <= dateLimit && dateToAdd > lowerBound) {
                         res.append(copyToDate(dateToAdd));
                     }
                     count--;
@@ -96,15 +105,36 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) {
             auto byDay = _rrule.byDay();
             auto byMonthDay = _rrule.byMonthDay();
             auto rankInMonth = _rrule.dayRankInMonth();
+            auto rankEventInMonth = ceil(_startTime.date().day() / 7.0);
+            if (byDay.size() > 1) break;
+
+            // Conditions to remove main event date from the count
+            if (fitCriteriaMonth()) {
+                count -= 1;
+            }
             while (currentDate <= dateLimit && count > 0) {
-                if (byDay.size()) {
-                } else if (byMonthDay.size()) {
-                } else {
-                    auto dateToAdd = currentDate.addDays(_rrule.interval() * 7 + dayOfMonth - 1);
-                    if (currentDate <= dateLimit && currentDate >= begin) {
-                        res.append(copyToDate(currentDate));
+                if (byDay.size() == 1) {
+                    QVector<QDateTime> dates;
+                    for (auto it = byDay.begin(); it != byDay.end(); ++it) {
+                        dates.append(getNextDaysOfWeekInMonth(
+                            currentDate, RRules::mapDayNum.value(*it), rankInMonth));
                     }
-                    count--;
+                    for (auto it = dates.begin(); it != dates.end(); ++it) {
+                        if (lowerBound < *it && *it <= dateLimit && count > 0) {
+                            res.append(copyToDate(*it));
+                            count--;
+                        }
+                    }
+                } else if (byMonthDay.size()) {
+                    for (auto it = byMonthDay.begin(); it != byMonthDay.end(); ++it) {
+                        auto dateToAdd = currentDate.addDays(*it - 1);
+                        if (lowerBound < dateToAdd && dateToAdd <= dateLimit && count > 0) {
+                            res.append(copyToDate(dateToAdd));
+                            count--;
+                        } else if (_startTime < dateToAdd && dateToAdd <= dateLimit) {
+                            count--;
+                        }
+                    }
                 }
                 currentDate = currentDate.addMonths(_rrule.interval());
             }
@@ -112,12 +142,38 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) {
         }
         case RRules::Freq::kYearly: {
             auto currentDate = _startTime;
+            auto byMonth = _rrule.byMonth();
+            auto byMonthDay = _rrule.byMonthDay();
+            auto byDay = _rrule.byDay();
+            auto rankInMonth = _rrule.dayRankInMonth();
+            if (byMonthDay.size() > 1 || byDay.size() > 1 || byMonth == 0) break;
+
+            if (byMonth == _startTime.date().month() && fitCriteriaMonth()) {
+                count -= 1;
+            }
             while (currentDate <= dateLimit && count > 0) {
-                currentDate = currentDate.addYears(_rrule.interval());
-                if (currentDate <= dateLimit && currentDate >= begin) {
-                    res.append(copyToDate(currentDate));
+                if (byMonthDay.size() == 1) {
+                    auto dateToAdd =
+                        QDateTime(QDate(currentDate.date().year(), byMonth, *byMonthDay.begin()),
+                                  currentDate.time(), currentDate.timeZone());
+                    if (lowerBound < dateToAdd && dateToAdd <= dateLimit && count > 0) {
+                        res.append(copyToDate(dateToAdd));
+                    } else if (_startTime < dateToAdd && dateToAdd <= dateLimit) {
+                        count--;
+                    }
+                } else if (rankInMonth != 0 && byDay.size() == 1) {
+                    auto dates = getNextDaysOfWeekInMonth(
+                        QDateTime(QDate(currentDate.date().year(), byMonth, 1), QTime(0, 0),
+                                  currentDate.timeZone()),
+                        RRules::mapDayNum.value(*byDay.begin()), rankInMonth);
+                    for (auto it = dates.begin(); it != dates.end(); ++it) {
+                        if (lowerBound < *it && *it <= dateLimit && count > 0) {
+                            res.append(copyToDate(*it));
+                            count--;
+                        }
+                    }
                 }
-                count--;
+                currentDate = currentDate.addYears(_rrule.interval());
             }
             break;
         }
@@ -128,7 +184,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) {
     return res;
 }
 
-Event Event::copyToDate(QDateTime date) {
+Event Event::copyToDate(QDateTime date) const {
     Event res = *this;
     res._startTime = date;
     return res;
@@ -141,4 +197,14 @@ QDebug operator<<(QDebug debug, const Event &c) {
     debug.nospace().noquote() << c.toString();
 
     return debug;
+}
+
+bool Event::fitCriteriaMonth() const {
+    auto rules = _rrule;
+
+    bool fitDayOfWeek = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
+    int rankEventInMonth = ceil(_startTime.date().day() / 7.0);
+    bool fitDayOfMonth = rules.byMonthDay().contains(_startTime.date().day());
+
+    return fitDayOfMonth || (fitDayOfWeek && (rankEventInMonth == rules.dayRankInMonth()));
 }

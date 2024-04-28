@@ -2,10 +2,10 @@
 #define HOME_MANAGEMENT_CLIENT_RRULES_H
 
 #include <QDateTime>
-#include <QSet>
 #include <QString>
 #include <algorithm>
 #include <limits>
+#include <set>
 
 #include "utils.h"
 
@@ -28,8 +28,11 @@ class RRules {
                                                {"FR", Day::kFriday},    {"SA", Day::kSaturday},
                                                {"SU", Day::kSunday}};
     inline static QMap<Day, int> mapDayNum = {
-        {Day::kMonday, 0}, {Day::kTuesday, 1},  {Day::kWednesday, 2}, {Day::kThursday, 3},
-        {Day::kFriday, 4}, {Day::kSaturday, 5}, {Day::kSunday, 6}};
+        {Day::kMonday, 1}, {Day::kTuesday, 2},  {Day::kWednesday, 3}, {Day::kThursday, 4},
+        {Day::kFriday, 5}, {Day::kSaturday, 6}, {Day::kSunday, 7}};
+    inline static QMap<int, Day> mapNumDay = {
+        {1, Day::kMonday}, {2, Day::kTuesday},  {3, Day::kWednesday}, {4, Day::kThursday},
+        {5, Day::kFriday}, {6, Day::kSaturday}, {7, Day::kSunday}};
 
     static RRules fromString(const QString rrules);
 
@@ -41,13 +44,13 @@ class RRules {
     void setInterval(const int interval);
     QDateTime until() const;
     void setUntil(const QDateTime &&until);
-    QSet<Day> byDay() const;
-    void setByDay(const QSet<Day> &&byDay);
+    std::set<Day> byDay() const;
+    void setByDay(const std::set<Day> &&byDay);
     void insertDay(const Day day);
     int dayRankInMonth() const;
     void setDayRankInMonth(const int dayRank);
-    QSet<int> byMonthDay() const;
-    void setByMonthDay(const QSet<int> byMonthDay);
+    std::set<int> byMonthDay() const;
+    void setByMonthDay(const std::set<int> byMonthDay);
     void insertMonthDay(const int monthDay);
     int byMonth() const;
     void setByMonth(const int byMonth);
@@ -59,13 +62,13 @@ class RRules {
     int _count = 0;
     int _interval = 1;
     QDateTime _until = QDateTime();
-    QSet<Day> _byDay;         // Only when freq = kDaily or freq = kWeekly
-    int _dayRankInMonth = 0;  // Only for freq = monthly, and a specific day of the week is
-                              // chosen (ex : first tuesday of the month)
-    QSet<int> _byMonthDay;    // Only when freq = monthly || yearly, value between -1 and 31, -1
-                              // being the last day of the month
-    int _byMonth = 0;         // Only when freq = kYearly in combinaison with byMonthDay
-                              // (with size = 1)
+    std::set<Day> _byDay;       // Only when freq = kDaily or freq = kWeekly
+    int _dayRankInMonth = 0;    // Only for freq = monthly, and a specific day of the week is
+                                // chosen (ex : first tuesday of the month)
+    std::set<int> _byMonthDay;  // Only when freq = monthly || yearly, value between
+                                // -1 and 31, -1 being the last day of the month
+    int _byMonth = 0;           // Only when freq = kYearly in combinaison with
+                                // byMonthDay (with size = 1)
     bool _valid = false;
     QString _str;
 };
