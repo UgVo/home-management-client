@@ -280,8 +280,7 @@ TEST(RRules, RRulesInterpretationInterval) {
 
 TEST(RRules, RRulesInterpretationUntil) {
     RRules rule = RRules::fromString("UNTIL=20240209T211000Z");
-    ASSERT_EQ(rule.until(), QDateTime(QDate(2024, 2, 9), QTime(21, 10, 00),
-                                      QTimeZone::utc()));
+    ASSERT_EQ(rule.until(), QDateTime(QDate(2024, 2, 9), QTime(21, 10, 00), QTimeZone::utc()));
 
     rule = RRules::fromString("UNTIL=");
     ASSERT_EQ(rule.until(), QDateTime());
