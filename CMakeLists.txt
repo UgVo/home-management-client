@@ -23,22 +23,10 @@ set(source_dir ${PROJECT_SOURCE_DIR}/src)
 
 set(header_files 
     ${include_dir}/mainwindow.h
-    ${include_dir}/apiconnector.h
-    ${include_dir}/storage.h
-    ${include_dir}/agenda.h
-    ${include_dir}/event.h
-    ${include_dir}/rrules.h
-    ${include_dir}/utils.h
 )
 
 set(source_files
     ${source_dir}/mainwindow.cpp
-    ${source_dir}/apiconnector.cpp
-    ${source_dir}/storage.cpp
-    ${source_dir}/agenda.cpp
-    ${source_dir}/event.cpp
-    ${source_dir}/rrules.cpp
-    ${source_dir}/utils.cpp
 )
 
 set(form_files
@@ -80,7 +68,13 @@ else()
     #qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(${target} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network)
+target_link_libraries(${target} 
+    PRIVATE 
+        Qt${QT_VERSION_MAJOR}::Widgets 
+        Qt${QT_VERSION_MAJOR}::Network
+    PRIVATE
+        calendar
+)
 
 target_include_directories(${target} PRIVATE include)
 
@@ -97,4 +91,4 @@ if(QT_VERSION_MAJOR EQUAL 6)
 endif()
 
 enable_testing()
-add_subdirectory(test)
+add_subdirectory(libs)

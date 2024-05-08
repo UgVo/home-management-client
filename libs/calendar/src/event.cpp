@@ -105,7 +105,6 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
             auto byDay = _rrule.byDay();
             auto byMonthDay = _rrule.byMonthDay();
             auto rankInMonth = _rrule.dayRankInMonth();
-            auto rankEventInMonth = ceil(_startTime.date().day() / 7.0);
             if (byDay.size() > 1) break;
 
             // Conditions to remove main event date from the count
@@ -158,6 +157,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
                                   currentDate.time(), currentDate.timeZone());
                     if (lowerBound < dateToAdd && dateToAdd <= dateLimit && count > 0) {
                         res.append(copyToDate(dateToAdd));
+                        count--;
                     } else if (_startTime < dateToAdd && dateToAdd <= dateLimit) {
                         count--;
                     }

@@ -1,3 +1,7 @@
+#include <QDateTime>
+#include <QString>
+#include <QTimeZone>
+
 #include "utils.h"
 
 QDateTime parseDateTime(const QString datetime) {
@@ -16,8 +20,8 @@ QDateTime parseDateTime(const QString datetime) {
 
 QVector<QDateTime> getNextDaysOfWeekInMonth(QDateTime begin, int rankInWeek, int rankInMonth) {
     QVector<QDateTime> res;
-    if (rankInWeek > 7 && rankInWeek < 1) return res;
-    if (rankInMonth > 5 && rankInMonth < 1) return res;
+    if (rankInWeek > 7 || rankInWeek < 0) return res;
+    if (rankInMonth > 5 || rankInMonth < -1) return res;
     auto month = begin.date().month();
     auto cal = QCalendar();
     auto end =

@@ -15,8 +15,8 @@ QDateTime parseDateTime(const QString datetime);
 /// of rank in week and rank in month
 /// @param begin Date after which looking for dates fitting the constraints
 /// @param rankInWeek Value between 1 and 7 corresponding to the day of the week
-/// @param rankInMonth Value between 1 and 5 corresponding to the "rank" of a day in the month (for
-/// example : 3 for the third monday of the month)
+/// @param rankInMonth Value between -1 and 5 corresponding to the "rank" of a day in the month (for
+/// example : 3 for the third monday of the month, -1 being the last occurence of the month)
 /// @return A vector of the founded date fitting the constraints
 QVector<QDateTime> getNextDaysOfWeekInMonth(QDateTime begin, int rankInWeek, int rankInMonth = 0);
 

@@ -10,6 +10,7 @@
 #include <limits>
 
 #include "rrules.h"
+#include "utils.h"
 
 class Event {
    public:
