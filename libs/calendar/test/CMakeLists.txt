@@ -13,8 +13,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(googletest)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Core Widgets Network)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Core Widgets Network)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network)
 
 add_executable(
   calendar_test
@@ -30,12 +29,6 @@ target_link_libraries(
   Qt${QT_VERSION_MAJOR}::Network
   GTest::gtest_main
   calendar
-)
-
-#target_include_directories(test PUBLIC ../include)
-target_include_directories(calendar_test PUBLIC 
-    "${PROJECT_BINARY_DIR}"
-    ../include
 )
 
 include(GoogleTest)

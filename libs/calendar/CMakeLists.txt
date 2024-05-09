@@ -4,10 +4,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "-fmodules-ts")
 
-find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Widgets Network REQUIRED)
-find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets Network REQUIRED)
+find_package(Qt6 REQUIRED COMPONENTS Core Widgets Network)
 
 add_library(calendar SHARED)
 
@@ -34,12 +32,10 @@ set(SOURCES_FILES
 
 target_sources(calendar
     PUBLIC
-        #FILE_SET CXX_MODULES FILES
-        #${SOURCE_DIR}/utils.cpp
     ${INCLUDE_FILES}
+    PRIVATE
     ${SOURCES_FILES}
 )
-
 
 target_link_libraries(calendar 
     PRIVATE 
