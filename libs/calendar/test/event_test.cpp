@@ -97,54 +97,54 @@ TEST(Event, RRulesWeekly) {
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 30));
     ASSERT_EQ(events.size(), 0);
     events = event1.getReccurentInstances(QDate(2024, 9, 28), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 17));
     ASSERT_EQ(events.size(), 3);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
 
     Event event2("Test Event", "FREQ=WEEKLY;BYDAY=FR,SA",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 30));
     ASSERT_EQ(events.size(), 0);
     events = event2.getReccurentInstances(QDate(2024, 9, 28), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 17));
     ASSERT_EQ(events.size(), 6);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[3].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[4].startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[5].startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[3]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[4]->startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[5]->startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
 
     Event event3("Test Event", "FREQ=WEEKLY;BYDAY=FR,SA;INTERVAL=2",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event3.getReccurentInstances(QDate(2024, 10, 14), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 4);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[3].startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[3]->startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
 
     Event event4("Test Event", "FREQ=WEEKLY;INTERVAL=2",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event4.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
 
     Event event5("Test Event", "FREQ=WEEKLY;UNTIL=20241107T000000Z",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -153,7 +153,7 @@ TEST(Event, RRulesWeekly) {
     ASSERT_EQ(events.size(), 0);
     events = event5.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
 
     Event event6("Test Event", "FREQ=WEEKLY;COUNT=5",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -162,10 +162,10 @@ TEST(Event, RRulesWeekly) {
     ASSERT_EQ(events.size(), 0);
     events = event6.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 4);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[3].startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 16), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[3]->startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
 
     Event event7("Test Event", "FREQ=WEEKLY;BYDAY=FR;COUNT=5",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -174,11 +174,11 @@ TEST(Event, RRulesWeekly) {
     ASSERT_EQ(events.size(), 0);
     events = event7.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 5);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[3].startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[4].startTime(), QDateTime(QDate(2024, 11, 29), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[3]->startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[4]->startTime(), QDateTime(QDate(2024, 11, 29), QTime(0, 0), QTimeZone(3600)));
 }
 
 TEST(Event, RRulesMonthly) {
@@ -187,27 +187,27 @@ TEST(Event, RRulesMonthly) {
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 10, 30), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 10, 30), QTime(0, 0), QTimeZone(3600)));
     events = event1.getReccurentInstances(QDate(2024, 9, 8), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 17));
     ASSERT_EQ(events.size(), 3);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 10, 30), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 6), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 10, 30), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 6), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 13), QTime(0, 0), QTimeZone(3600)));
 
     Event event2("Test Event", "FREQ=MONTHLY;BYDAY=2FR",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 9));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
     events = event2.getReccurentInstances(QDate(2024, 9, 1), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 12, 17));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 12, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 12, 13), QTime(0, 0), QTimeZone(3600)));
 
     Event event3("Test Event", "FREQ=MONTHLY;BYDAY=FR,SA;INTERVAL=2",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -220,15 +220,15 @@ TEST(Event, RRulesMonthly) {
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event4.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 12, 14));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 12, 6), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 12, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 12, 6), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 12, 13), QTime(0, 0), QTimeZone(3600)));
 
     Event event5("Test Event", "FREQ=MONTHLY;BYDAY=FR;UNTIL=20241107T000000Z",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event5.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
 
     Event event6("Test Event", "FREQ=MONTHLY;BYDAY=FR;COUNT=5",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -237,11 +237,11 @@ TEST(Event, RRulesMonthly) {
     ASSERT_EQ(events.size(), 0);
     events = event6.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 5);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[3].startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[4].startTime(), QDateTime(QDate(2024, 11, 29), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 1), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 8), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[3]->startTime(), QDateTime(QDate(2024, 11, 22), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[4]->startTime(), QDateTime(QDate(2024, 11, 29), QTime(0, 0), QTimeZone(3600)));
 
     Event event7("Test Event", "FREQ=MONTHLY;BYMONTHDAY=6,9,15;COUNT=5",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -250,15 +250,14 @@ TEST(Event, RRulesMonthly) {
     ASSERT_EQ(events.size(), 0);
     events = event7.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 3);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 6), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[2].startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 6), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 11, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[2]->startTime(), QDateTime(QDate(2024, 11, 15), QTime(0, 0), QTimeZone(3600)));
 
     events = event7.getReccurentInstances(QDate(2024, 11, 30), QDate(2024, 12, 30));
-    std::sort(events.begin(), events.end());
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 12, 6), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 12, 9), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 12, 6), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 12, 9), QTime(0, 0), QTimeZone(3600)));
 
     Event event8("Test Event", "FREQ=MONTHLY;BYDAY=4SA",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -269,8 +268,8 @@ TEST(Event, RRulesMonthly) {
     ASSERT_EQ(events.size(), 0);
     events = event8.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 12, 30));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2024, 12, 28), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2024, 11, 23), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2024, 12, 28), QTime(0, 0), QTimeZone(3600)));
 }
 
 TEST(Event, RRulesYearly) {
@@ -279,28 +278,28 @@ TEST(Event, RRulesYearly) {
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2025, 11, 3));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 26), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 26), QTime(0, 0), QTimeZone(3600)));
 
     events = event1.getReccurentInstances(QDate(2023, 9, 8), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2026, 11, 17));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 26), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2026, 10, 26), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 26), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2026, 10, 26), QTime(0, 0), QTimeZone(3600)));
 
     Event event2("Test Event", "FREQ=YEARLY;BYMONTH=10;BYDAY=2TU",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2025, 11, 9));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 14), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 14), QTime(0, 0), QTimeZone(3600)));
 
     events = event2.getReccurentInstances(QDate(2024, 9, 1), QDate(2024, 9, 30));
     ASSERT_EQ(events.size(), 0);
     events = event2.getReccurentInstances(QDate(2024, 10, 23), QDate(2026, 12, 17));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 14), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 14), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
 
     Event event3("Test Event", "FREQ=YEARLY;BYDAY=FR,SA",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
@@ -314,36 +313,34 @@ TEST(Event, RRulesYearly) {
     events = event3_2.getReccurentInstances(QDate(2024, 10, 14), QDate(2024, 11, 30));
     ASSERT_EQ(events.size(), 0);
 
-    qDebug() << "-------------------------------------";
     Event event4("Test Event", "FREQ=YEARLY;BYMONTH=10;BYDAY=2TU;INTERVAL=2",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event4.getReccurentInstances(QDate(2024, 10, 23), QDate(2026, 11, 9));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
 
     events = event4.getReccurentInstances(QDate(2024, 10, 23), QDate(2028, 12, 17));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2028, 10, 10), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2026, 10, 13), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2028, 10, 10), QTime(0, 0), QTimeZone(3600)));
 
     Event event4_3("Test Event", "FREQ=YEARLY;BYMONTH=10;BYDAY=4SA;COUNT=2",
                    QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                    QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event4_3.getReccurentInstances(QDate(2024, 10, 23), QDate(2026, 11, 9));
     ASSERT_EQ(events.size(), 1);
-    qDebug() << events[0].startTime();
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
 
     events = event4_3.getReccurentInstances(QDate(2024, 10, 23), QDate(2028, 12, 17));
     ASSERT_EQ(events.size(), 1);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
 
     Event event5("Test Event", "FREQ=YEARLY;BYMONTH=10;BYDAY=4SA;UNTIL=20261107T000000Z",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
     events = event5.getReccurentInstances(QDate(2024, 10, 23), QDate(2027, 12, 17));
     ASSERT_EQ(events.size(), 2);
-    ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
-    ASSERT_EQ(events[1].startTime(), QDateTime(QDate(2026, 10, 24), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[0]->startTime(), QDateTime(QDate(2025, 10, 25), QTime(0, 0), QTimeZone(3600)));
+    ASSERT_EQ(events[1]->startTime(), QDateTime(QDate(2026, 10, 24), QTime(0, 0), QTimeZone(3600)));
 }

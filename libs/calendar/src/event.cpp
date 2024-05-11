@@ -32,14 +32,22 @@ QString Event::toString() const {
 }
 
 QDateTime Event::startTime() const { return _startTime; }
+
+QDateTime Event::endTime() const { return _endTime; }
+
 QDateTime Event::lastModified() const { return _lastModified; }
+
 QString Event::uid() const { return _uid; }
 
-QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
+QString Event::content() const { return _content; }
+
+bool Event::isReccurent() const { return _rrule.isValid(); }
+
+QVector<QSharedPointer<Event>> Event::getReccurentInstances(QDate _begin, QDate _end) const {
     QDateTime begin(_begin, QTime(0, 0), _startTime.timeZone());
     QDateTime end(_end, QTime(23, 59), _startTime.timeZone());
     QDateTime lowerBound(std::max(begin.date(), _startTime.date()), begin.time(), begin.timeZone());
-    QVector<Event> res;
+    QVector<QSharedPointer<Event>> res;
     if (!_rrule.isValid()) {
         qInfo() << "RRule invalid";
         return res;
@@ -70,7 +78,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
             break;
         }
         case RRules::Freq::kWeekly: {
-            int dayOfWeek    = _startTime.date().dayOfWeek();
+            int  dayOfWeek   = _startTime.date().dayOfWeek();
             auto currentDate = _startTime.addDays(-(dayOfWeek - 1));
             auto byDay       = _rrule.byDay();
 
@@ -100,7 +108,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
             break;
         }
         case RRules::Freq::kMonthly: {
-            int dayOfMonth   = _startTime.date().day();
+            int  dayOfMonth  = _startTime.date().day();
             auto currentDate = _startTime.addDays(-dayOfMonth + 1);
             auto byDay       = _rrule.byDay();
             auto byMonthDay  = _rrule.byMonthDay();
@@ -184,9 +192,9 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
     return res;
 }
 
-Event Event::copyToDate(QDateTime date) const {
-    Event res      = *this;
-    res._startTime = date;
+QSharedPointer<Event> Event::copyToDate(QDateTime date) const {
+    QSharedPointer<Event> res = QSharedPointer<Event>::create(*this);
+    res->_startTime           = date;
     return res;
 }
 
@@ -200,11 +208,11 @@ QDebug operator<<(QDebug debug, const Event &c) {
 }
 
 bool Event::fitCriteriaMonth() const {
-    auto rules           = _rrule;
+    auto rules        = _rrule;
 
-    bool fitDayOfWeek    = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
-    int rankEventInMonth = ceil(_startTime.date().day() / 7.0);
-    bool fitDayOfMonth   = rules.byMonthDay().contains(_startTime.date().day());
+    bool fitDayOfWeek = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
+    int  rankEventInMonth = ceil(_startTime.date().day() / 7.0);
+    bool fitDayOfMonth    = rules.byMonthDay().contains(_startTime.date().day());
 
     return fitDayOfMonth || (fitDayOfWeek && (rankEventInMonth == rules.dayRankInMonth()));
 }

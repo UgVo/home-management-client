@@ -21,12 +21,16 @@ class Event {
     Event(QJsonObject &&json);
     ~Event();
 
-    QString        toString() const;
-    QDateTime      startTime() const;
-    QDateTime      lastModified() const;
-    QString        uid() const;
-    QVector<Event> getReccurentInstances(QDate begin, QDate end) const;
-    Event          copyToDate(QDateTime date) const;
+    QString   toString() const;
+    QDateTime startTime() const;
+    QDateTime endTime() const;
+    QDateTime lastModified() const;
+    QString   uid() const;
+    QString   content() const;
+    bool      isReccurent() const;
+
+    QSharedPointer<Event>          copyToDate(QDateTime date) const;
+    QVector<QSharedPointer<Event>> getReccurentInstances(QDate begin, QDate end) const;
 
     bool operator<(const Event &other) const;
 
