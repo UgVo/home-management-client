@@ -23,7 +23,7 @@ QVector<QDateTime> getNextDaysOfWeekInMonth(QDateTime begin, int rankInWeek, int
     if (rankInWeek > 7 || rankInWeek < 0) return res;
     if (rankInMonth > 5 || rankInMonth < -1) return res;
     auto month = begin.date().month();
-    auto cal = QCalendar();
+    auto cal   = QCalendar();
     auto end =
         QDateTime(QDate(begin.date().year(), month, cal.daysInMonth(month, begin.date().year())),
                   begin.time(), begin.timeZone());

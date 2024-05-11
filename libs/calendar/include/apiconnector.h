@@ -6,18 +6,20 @@
 #include <QNetworkRequest>
 #include <QUrl>
 
+using Reply_handler = std::function<void(QNetworkReply *)>;
+
 class ApiConnector {
    public:
     ApiConnector(QString url = "http://localhost:3030");
     ~ApiConnector();
 
    public slots:
-    void getCalendarsInfos(std::function<void(QNetworkReply *)> f);
-    void getCalendarEvents(QString &&calendarName, std::function<void(QNetworkReply *)> f);
-    void getCalendarUpdate(QString &&calendarName, std::function<void(QNetworkReply *)> f);
+    void getCalendarsInfos(Reply_handler f);
+    void getCalendarEvents(QString &&calendarName, Reply_handler f);
+    void getCalendarUpdate(QString &&calendarName, Reply_handler f);
 
    private:
-    QString url;
+    QString               url;
     QNetworkAccessManager manager;
 };
 #endif  // HOME_MANAGEMENT_CLIENT_APICONNECTOR_H

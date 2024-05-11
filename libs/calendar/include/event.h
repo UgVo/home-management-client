@@ -15,31 +15,31 @@
 class Event {
    public:
     Event(QString content, QString rrule, QDateTime startTime, QDateTime _endTime,
-          QDateTime lastModified = QDateTime::currentDateTime(),
+          QDateTime lastModified     = QDateTime::currentDateTime(),
           QDateTime creationDatetime = QDateTime::currentDateTime(),
-          QString uid = QUuid::createUuid().toString());
+          QString   uid              = QUuid::createUuid().toString());
     Event(QJsonObject &&json);
     ~Event();
 
-    QString toString() const;
-    QDateTime startTime() const;
-    QDateTime lastModified() const;
-    QString uid() const;
+    QString        toString() const;
+    QDateTime      startTime() const;
+    QDateTime      lastModified() const;
+    QString        uid() const;
     QVector<Event> getReccurentInstances(QDate begin, QDate end) const;
-    Event copyToDate(QDateTime date) const;
+    Event          copyToDate(QDateTime date) const;
 
     bool operator<(const Event &other) const;
 
    private:
     bool fitCriteriaMonth() const;
 
-    QString _content;
+    QString   _content;
     QDateTime _creationDatetime;
     QDateTime _startTime;
     QDateTime _endTime;
     QDateTime _lastModified;
-    QString _uid;
-    RRules _rrule;
+    QString   _uid;
+    RRules    _rrule;
 };
 
 QDebug operator<<(QDebug debug, const Event &c);

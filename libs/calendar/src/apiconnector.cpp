@@ -4,7 +4,7 @@ ApiConnector::ApiConnector(QString _url) : url(_url) {}
 
 ApiConnector::~ApiConnector() {}
 
-void ApiConnector::getCalendarsInfos(std::function<void(QNetworkReply *)> f) {
+void ApiConnector::getCalendarsInfos(Reply_handler f) {
     QNetworkRequest request(QUrl(url + "/v1/calendars/infos"));
     request.setRawHeader("Content-Type", "application/json");
     request.setRawHeader("Content-Type", "text/plain");
@@ -15,8 +15,7 @@ void ApiConnector::getCalendarsInfos(std::function<void(QNetworkReply *)> f) {
     });
 }
 
-void ApiConnector::getCalendarEvents(QString &&calendarName,
-                                     std::function<void(QNetworkReply *)> f) {
+void ApiConnector::getCalendarEvents(QString &&calendarName, Reply_handler f) {
     QNetworkRequest request(QUrl(url + "/v1/calendars/" + calendarName + "/events"));
     request.setRawHeader("Content-Type", "application/json");
     request.setRawHeader("Content-Type", "text/plain");
@@ -27,8 +26,7 @@ void ApiConnector::getCalendarEvents(QString &&calendarName,
     });
 }
 
-void ApiConnector::getCalendarUpdate(QString &&calendarName,
-                                     std::function<void(QNetworkReply *)> f) {
+void ApiConnector::getCalendarUpdate(QString &&calendarName, Reply_handler f) {
     QNetworkRequest request(QUrl(url + "/v1/calendars/" + calendarName + "/update"));
     request.setRawHeader("Content-Type", "application/json");
     request.setRawHeader("Content-Type", "text/plain");

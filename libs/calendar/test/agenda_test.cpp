@@ -6,8 +6,8 @@
 #include "agenda.h"
 
 TEST(Agenda, Constructor) {
-    Agenda agenda_invalid;
-    Agenda agenda_first_ctor(QString("Agenda test"), QString("https://caldav.server.com"), 10);
+    Agenda  agenda_invalid;
+    Agenda  agenda_first_ctor(QString("Agenda test"), QString("https://caldav.server.com"), 10);
     QString json_str = QString(
         "{\"name\":\"commun-test\",\"url\":\"https://baikal.mycozycloud.ovh/dav.php/"
         "calendars/dev/commun_test/\",\"nb_of_events\":6}");
@@ -18,7 +18,7 @@ TEST(Agenda, Constructor) {
 }
 
 TEST(Agenda, UpdateEvents) {
-    Agenda agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
+    Agenda  agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
     QString json_str = QString(
         "[{\"content\":\"test\",\"created\":\"2024-02-20T23:02:19+01:00\",\"start\":\"2024-02-"
         "06T15:"
@@ -33,7 +33,7 @@ TEST(Agenda, UpdateEvents) {
 }
 
 TEST(Agenda, GetEventsWhole) {
-    Agenda agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
+    Agenda  agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
     QString json_str = QString(
         "[{\"content\":\"test\",\"created\":\"2024-02-20T23:02:19+01:00\",\"start\":\"2024-02-"
         "06T15:"
@@ -55,7 +55,7 @@ TEST(Agenda, GetEventsWhole) {
 }
 
 TEST(Agenda, GetEventsPartial) {
-    Agenda agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
+    Agenda  agenda(QString("Agenda test"), QString("https://caldav.server.com"), 10);
     QString json_str = QString(
         "[{\"content\":\"test\",\"created\":\"2024-02-20T23:02:19+01:00\",\"start\":\"2024-02-"
         "06T15:"

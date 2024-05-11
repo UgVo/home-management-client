@@ -9,6 +9,9 @@
 
 #include "event.h"
 
+using Event_vect = QVector<QSharedPointer<Event>>;
+using Event_map  = QMap<QString, QSharedPointer<Event>>;
+
 class Agenda {
    public:
     Agenda();
@@ -16,23 +19,22 @@ class Agenda {
     Agenda(QJsonObject &&json);
     ~Agenda();
 
-    bool isValid() const;
+    bool    isValid() const;
     QString toString() const;
-    size_t updateEvents(QJsonArray &&json);
+    size_t  updateEvents(QJsonArray &&json);
 
     // TODO take in account the reccurent events, they may not be taken in account if the main event
     // in not in the interval, more over they may account for more than one occurrence (should
     // probably make a second iteration over the data to get the recurrents events)
-    QVector<QSharedPointer<Event>> getEvents(QDateTime start = QDateTime(),
-                                             QDateTime end = QDateTime());
+    Event_vect getEvents(QDateTime start = QDateTime(), QDateTime end = QDateTime());
 
    private:
-    bool _valid;
-    QString _name;
-    QString _url;
-    size_t _number_of_events;
-    QVector<QSharedPointer<Event>> events;
-    QMap<QString, QSharedPointer<Event>> events_map;
+    bool       _valid;
+    QString    _name;
+    QString    _url;
+    size_t     _number_of_events;
+    Event_vect events;
+    Event_map  events_map;
 };
 
 QDebug operator<<(QDebug debug, const Agenda &c);

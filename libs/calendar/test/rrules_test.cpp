@@ -42,7 +42,7 @@ TEST(RRules, RRulesInterpretationDaily) {
     ASSERT_FALSE(daily4.until().isValid());
 
     QDateTime expected(QDate(2024, 2, 9), QTime(21, 0, 0), QTimeZone::utc());
-    RRules daily5 = RRules::fromString("FREQ=DAILY;UNTIL=20240209T210000Z");
+    RRules    daily5 = RRules::fromString("FREQ=DAILY;UNTIL=20240209T210000Z");
     ASSERT_TRUE(daily5.isValid());
     ASSERT_EQ(daily5.freq(), RRules::Freq::kDaily);
     ASSERT_EQ(daily5.interval(), 1);
@@ -85,7 +85,7 @@ TEST(RRules, RRulesInterpretationWeekly) {
     ASSERT_FALSE(rule4.until().isValid());
 
     QDateTime expected(QDate(2024, 2, 9), QTime(21, 10, 0), QTimeZone::utc());
-    RRules rule5 = RRules::fromString("FREQ=WEEKLY;UNTIL=20240209T211000Z");
+    RRules    rule5 = RRules::fromString("FREQ=WEEKLY;UNTIL=20240209T211000Z");
     ASSERT_TRUE(rule5.isValid());
     ASSERT_EQ(rule5.freq(), RRules::Freq::kWeekly);
     ASSERT_EQ(rule5.interval(), 1);
@@ -146,7 +146,7 @@ TEST(RRules, RRulesInterpretationMonthly) {
     ASSERT_FALSE(rule5.until().isValid());
 
     QDateTime expected(QDate(2024, 2, 9), QTime(21, 10, 0), QTimeZone::utc());
-    RRules rule6 = RRules::fromString("FREQ=MONTHLY;UNTIL=20240209T211000Z");
+    RRules    rule6 = RRules::fromString("FREQ=MONTHLY;UNTIL=20240209T211000Z");
     ASSERT_TRUE(rule6.isValid());
     ASSERT_EQ(rule6.freq(), RRules::Freq::kMonthly);
     ASSERT_EQ(rule6.interval(), 1);
@@ -212,7 +212,7 @@ TEST(RRules, RRulesInterpretationYearly) {
     ASSERT_FALSE(rule5.until().isValid());
 
     QDateTime expected(QDate(2024, 2, 9), QTime(21, 10, 0), QTimeZone::utc());
-    RRules rule6 = RRules::fromString("FREQ=YEARLY;UNTIL=20240209T211000Z");
+    RRules    rule6 = RRules::fromString("FREQ=YEARLY;UNTIL=20240209T211000Z");
     ASSERT_TRUE(rule6.isValid());
     ASSERT_EQ(rule6.freq(), RRules::Freq::kYearly);
     ASSERT_EQ(rule6.interval(), 1);
@@ -294,7 +294,7 @@ TEST(RRules, RRulesInterpretationUntil) {
 
 TEST(RRules, RRulesInterpretationByDay) {
     RRules rule = RRules::fromString("BYDAY=MO,TU,FR");
-    auto days = rule.byDay();
+    auto   days = rule.byDay();
     ASSERT_EQ(days.size(), 3);
     ASSERT_TRUE(days.contains(RRules::Day::kMonday));
     ASSERT_TRUE(days.contains(RRules::Day::kTuesday));
@@ -322,17 +322,17 @@ TEST(RRules, RRulesInterpretationByDay) {
 }
 
 TEST(RRules, RRulesInterpretationByMonthDay) {
-    RRules rule = RRules::fromString("BYMONTHDAY=2,5,32");
-    auto monthDays = rule.byMonthDay();
+    RRules rule      = RRules::fromString("BYMONTHDAY=2,5,32");
+    auto   monthDays = rule.byMonthDay();
     ASSERT_EQ(monthDays.size(), 2);
     ASSERT_TRUE(monthDays.contains(2));
     ASSERT_TRUE(monthDays.contains(5));
 
-    rule = RRules::fromString("BYMONTHDAY=");
+    rule      = RRules::fromString("BYMONTHDAY=");
     monthDays = rule.byMonthDay();
     ASSERT_EQ(monthDays.size(), 0);
 
-    rule = RRules::fromString("BYMONTHDAY=blabla");
+    rule      = RRules::fromString("BYMONTHDAY=blabla");
     monthDays = rule.byMonthDay();
     ASSERT_EQ(monthDays.size(), 0);
 }

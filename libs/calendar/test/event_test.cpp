@@ -6,8 +6,8 @@
 #include "event.h"
 
 TEST(Event, Constructor) {
-    Event event("Test Event", "", QDateTime(QDate(2024, 10, 26), QTime(11, 3), QTimeZone(3600)),
-                QDateTime(QDate(2024, 10, 26), QTime(11, 6), QTimeZone(3600)));
+    Event   event("Test Event", "", QDateTime(QDate(2024, 10, 26), QTime(11, 3), QTimeZone(3600)),
+                  QDateTime(QDate(2024, 10, 26), QTime(11, 6), QTimeZone(3600)));
     QString json_str =
         "{\"content\":\"test\",\"created\":\"2024-02-20T23:02:19+01:00\","
         "\"start\":\"2024-02-06T15:"
@@ -41,7 +41,7 @@ TEST(Event, RRulesDaily) {
     Event event1("Test Event", "FREQ=DAILY",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
-    auto events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 28));
+    auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 28));
     ASSERT_EQ(events.size(), 2);
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 30));
     ASSERT_EQ(events.size(), 4);
@@ -95,7 +95,7 @@ TEST(Event, RRulesWeekly) {
     Event event1("Test Event", "FREQ=WEEKLY",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
-    auto events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
+    auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
     ASSERT_EQ(events.size(), 1);
     ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 11, 2), QTime(0, 0), QTimeZone(3600)));
     events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 10, 30));
@@ -185,7 +185,7 @@ TEST(Event, RRulesMonthly) {
     Event event1("Test Event", "FREQ=MONTHLY;BYDAY=WE",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
-    auto events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
+    auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2024, 11, 3));
     ASSERT_EQ(events.size(), 1);
     ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2024, 10, 30), QTime(0, 0), QTimeZone(3600)));
     events = event1.getReccurentInstances(QDate(2024, 9, 8), QDate(2024, 9, 30));
@@ -277,7 +277,7 @@ TEST(Event, RRulesYearly) {
     Event event1("Test Event", "FREQ=YEARLY;BYMONTH=10;BYMONTHDAY=26",
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)),
                  QDateTime(QDate(2024, 10, 26), QTime(0, 0), QTimeZone(3600)));
-    auto events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2025, 11, 3));
+    auto  events = event1.getReccurentInstances(QDate(2024, 10, 23), QDate(2025, 11, 3));
     ASSERT_EQ(events.size(), 1);
     ASSERT_EQ(events[0].startTime(), QDateTime(QDate(2025, 10, 26), QTime(0, 0), QTimeZone(3600)));
 

@@ -8,8 +8,8 @@ Agenda::Agenda(QString &&name, QString &&url, size_t number_of_events)
 Agenda::~Agenda() {}
 
 Agenda::Agenda(QJsonObject &&json) : _valid(true) {
-    _name = json.value("name").toString();
-    _url = json.value("url").toString();
+    _name             = json.value("name").toString();
+    _url              = json.value("url").toString();
     _number_of_events = json.value("nb_of_events").toInt();
 }
 

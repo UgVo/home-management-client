@@ -18,7 +18,7 @@ RRules RRules::fromString(const QString rrules) {
             QStringList days = rule[1].split(',');
             for (auto it = days.begin(); it != days.end(); ++it) {
                 if (it->size() > 2) {
-                    QString day = it->sliced(it->size() - 2);
+                    QString day  = it->sliced(it->size() - 2);
                     QString rank = it->chopped(2);
                     res.insertDay(RRules::mapDay[day]);
                     res.setDayRankInMonth(rank.toInt());
@@ -42,7 +42,7 @@ RRules RRules::fromString(const QString rrules) {
 RRules::Freq RRules::freq() const { return _freq; }
 
 void RRules::setFreq(const Freq freq) {
-    _freq = freq;
+    _freq  = freq;
     _valid = true;
 }
 

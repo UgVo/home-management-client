@@ -11,13 +11,13 @@ Event::Event(QString content, QString rrule, QDateTime startTime, QDateTime endT
       _uid(uid) {}
 
 Event::Event(QJsonObject &&json) {
-    _content = json.value("content").toString();
-    _rrule = RRules::fromString(json.value("rrule").toString());
-    _startTime = parseDateTime(json.value("start").toString());
-    _endTime = parseDateTime(json.value("end").toString());
-    _lastModified = parseDateTime(json.value("last_modified").toString());
+    _content          = json.value("content").toString();
+    _rrule            = RRules::fromString(json.value("rrule").toString());
+    _startTime        = parseDateTime(json.value("start").toString());
+    _endTime          = parseDateTime(json.value("end").toString());
+    _lastModified     = parseDateTime(json.value("last_modified").toString());
     _creationDatetime = parseDateTime(json.value("created").toString());
-    _uid = json.value("uid").toString();
+    _uid              = json.value("uid").toString();
 }
 
 Event::~Event() {}
@@ -53,7 +53,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
         return res;
     }
     auto dateLimit = _rrule.until().isValid() ? std::min<QDateTime>(_rrule.until(), end) : end;
-    auto count = _rrule.count() != 0 ? _rrule.count() : _startTime.daysTo(end) + 1;
+    auto count     = _rrule.count() != 0 ? _rrule.count() : _startTime.daysTo(end) + 1;
 
     switch (_rrule.freq()) {
         case RRules::Freq::kDaily: {
@@ -70,9 +70,9 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
             break;
         }
         case RRules::Freq::kWeekly: {
-            int dayOfWeek = _startTime.date().dayOfWeek();
+            int dayOfWeek    = _startTime.date().dayOfWeek();
             auto currentDate = _startTime.addDays(-(dayOfWeek - 1));
-            auto byDay = _rrule.byDay();
+            auto byDay       = _rrule.byDay();
 
             // Conditions to remove main event date from the count
             if (byDay.empty() || byDay.contains(RRules::mapNumDay[_startTime.date().dayOfWeek()])) {
@@ -100,10 +100,10 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
             break;
         }
         case RRules::Freq::kMonthly: {
-            int dayOfMonth = _startTime.date().day();
+            int dayOfMonth   = _startTime.date().day();
             auto currentDate = _startTime.addDays(-dayOfMonth + 1);
-            auto byDay = _rrule.byDay();
-            auto byMonthDay = _rrule.byMonthDay();
+            auto byDay       = _rrule.byDay();
+            auto byMonthDay  = _rrule.byMonthDay();
             auto rankInMonth = _rrule.dayRankInMonth();
             if (byDay.size() > 1) break;
 
@@ -141,9 +141,9 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
         }
         case RRules::Freq::kYearly: {
             auto currentDate = _startTime;
-            auto byMonth = _rrule.byMonth();
-            auto byMonthDay = _rrule.byMonthDay();
-            auto byDay = _rrule.byDay();
+            auto byMonth     = _rrule.byMonth();
+            auto byMonthDay  = _rrule.byMonthDay();
+            auto byDay       = _rrule.byDay();
             auto rankInMonth = _rrule.dayRankInMonth();
             if (byMonthDay.size() > 1 || byDay.size() > 1 || byMonth == 0) break;
 
@@ -185,7 +185,7 @@ QVector<Event> Event::getReccurentInstances(QDate _begin, QDate _end) const {
 }
 
 Event Event::copyToDate(QDateTime date) const {
-    Event res = *this;
+    Event res      = *this;
     res._startTime = date;
     return res;
 }
@@ -200,11 +200,11 @@ QDebug operator<<(QDebug debug, const Event &c) {
 }
 
 bool Event::fitCriteriaMonth() const {
-    auto rules = _rrule;
+    auto rules           = _rrule;
 
-    bool fitDayOfWeek = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
+    bool fitDayOfWeek    = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
     int rankEventInMonth = ceil(_startTime.date().day() / 7.0);
-    bool fitDayOfMonth = rules.byMonthDay().contains(_startTime.date().day());
+    bool fitDayOfMonth   = rules.byMonthDay().contains(_startTime.date().day());
 
     return fitDayOfMonth || (fitDayOfWeek && (rankEventInMonth == rules.dayRankInMonth()));
 }
