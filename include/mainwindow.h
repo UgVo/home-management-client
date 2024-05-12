@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
 
    private:
     Ui::MainWindow *ui;
-    ApiConnector api_connector;
-    Storage storage;
+    ApiConnector    api_connector;
+    Storage         storage;
 };
 #endif  // HOME_MANAGEMENT_CLIENT_MAINWINDOW_H

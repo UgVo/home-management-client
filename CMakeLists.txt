@@ -17,17 +17,17 @@ set(resources_dir ${PROJECT_SOURCE_DIR}/resources)
 
 set(header_files 
     ${include_dir}/mainwindow.h
-    ${include_dir}/eventwidget.h
+    ${include_dir}/eventdaywidget.h
 )
 
 set(source_files
     ${source_dir}/mainwindow.cpp
-    ${source_dir}/eventwidget.cpp
+    ${source_dir}/eventdaywidget.cpp
 )
 
 set(form_files
     ${source_dir}/mainwindow.ui
-    ${source_dir}/eventwidget.ui
+    ${source_dir}/eventdaywidget.ui
 )
 
 set(PROJECT_SOURCES
