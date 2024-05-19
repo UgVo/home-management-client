@@ -1,26 +1,56 @@
 #include "event.h"
 
 Event::Event(QString content, QString rrule, QDateTime startTime, QDateTime endTime,
-             QDateTime lastModified, QDateTime creationDatetime, QString uid)
-    : _content(content),
-      _rrule(RRules::fromString(rrule)),
-      _startTime(startTime),
-      _endTime(endTime),
-      _lastModified(lastModified),
-      _creationDatetime(creationDatetime),
-      _uid(uid) {}
+             QDateTime lastModified, QDateTime creationDatetime, QString uid) {
+    if (startTime > endTime) {
+        _valid = false;
+        return;
+    }
+    _content          = content;
+    _rrule            = RRules::fromString(rrule);
+    _startTime        = startTime;
+    _endTime          = endTime;
+    _lastModified     = lastModified;
+    _creationDatetime = creationDatetime;
+    _uid              = uid;
+    _valid            = true;
+}
 
 Event::Event(QJsonObject &&json) {
+    auto startTime = parseDateTime(json.value("start").toString());
+    auto endTime   = parseDateTime(json.value("end").toString());
+    if (startTime > endTime) {
+        _valid = false;
+        return;
+    }
+
     _content          = json.value("content").toString();
     _rrule            = RRules::fromString(json.value("rrule").toString());
-    _startTime        = parseDateTime(json.value("start").toString());
-    _endTime          = parseDateTime(json.value("end").toString());
+    _startTime        = startTime;
+    _endTime          = endTime;
     _lastModified     = parseDateTime(json.value("last_modified").toString());
     _creationDatetime = parseDateTime(json.value("created").toString());
     _uid              = json.value("uid").toString();
 }
 
+Event::Event(const Event &other) {
+    if (other._startTime > other._endTime) {
+        _valid = false;
+        return;
+    }
+
+    _content          = other._content;
+    _rrule            = other._rrule;
+    _startTime        = other._startTime;
+    _endTime          = other._endTime;
+    _lastModified     = other._lastModified;
+    _creationDatetime = other._creationDatetime;
+    _uid              = QUuid::createUuid().toString();
+}
+
 Event::~Event() {}
+
+bool Event::isValid() const { return _valid; }
 
 QString Event::toString() const {
     return QString(
@@ -192,9 +222,31 @@ QVector<QSharedPointer<Event>> Event::getReccurentInstances(QDate _begin, QDate 
     return res;
 }
 
-QSharedPointer<Event> Event::copyToDate(QDateTime date) const {
+void Event::updateContent(const QString newContent) {
+    _content = newContent;
+    emit contentChanged(_uid, _content);
+}
+
+void Event::updateStartTime(const QDateTime newStart) {
+    _startTime = newStart;
+    emit startTimeChanged(_uid, _startTime);
+}
+
+void Event::updateEndTime(const QDateTime newEndTime) {
+    _endTime = newEndTime;
+    emit endTimeChanged(_uid, _endTime);
+}
+
+void Event::updateReccurenceRules(const RRules newRules) {
+    _rrule = newRules;
+    emit reccurentStateChanged(_uid, _rrule.isValid());
+}
+
+QSharedPointer<Event> Event::copyToDate(const QDateTime date) const {
     QSharedPointer<Event> res = QSharedPointer<Event>::create(*this);
     res->_startTime           = date;
+    res->_endTime             = _endTime - _startTime + date;
+    res->_mainEventUID        = _uid;
     return res;
 }
 
@@ -208,7 +260,7 @@ QDebug operator<<(QDebug debug, const Event &c) {
 }
 
 bool Event::fitCriteriaMonth() const {
-    auto rules        = _rrule;
+    auto rules = _rrule;
 
     bool fitDayOfWeek = rules.byDay().contains(RRules::mapNumDay[_startTime.date().dayOfWeek()]);
     int  rankEventInMonth = ceil(_startTime.date().day() / 7.0);

@@ -1,32 +1,35 @@
 #include <QApplication>
 
 #include "apiconnector.h"
-#include "eventwidget.h"
+#include "daywidget.h"
+#include "eventdaywidget.h"
 #include "mainwindow.h"
+#include "weekview.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
     QFontDatabase::addApplicationFont(QStringLiteral(":/font/NotoColorEmoji.ttf"));
 
     MainWindow w;
 
-    QFont serifFont("Sans Serif", 12);
+    QFont serifFont("Sans Serif", 11);
 
     QSharedPointer<Event> event = QSharedPointer<Event>::create(
-        "🥳 test", "", QDateTime(QDate(2024, 10, 26), QTime(11, 3), QTimeZone(3600)),
-        QDateTime(QDate(2024, 10, 26), QTime(11, 6), QTimeZone(3600)));
-    EventWidget testEventWidget(event);
-    testEventWidget.setFont(serifFont);
+        "🥳 test 1", "", QDateTime(QDate(2024, 05, 18), QTime(11, 0), QTimeZone(3600)),
+        QDateTime(QDate(2024, 05, 18), QTime(13, 0), QTimeZone(3600)));
 
     QSharedPointer<Event> event2 = QSharedPointer<Event>::create(
-        "Test Event", "FREQ=MONTHLY;BYDAY=WE",
-        QDateTime(QDate(2024, 10, 26), QTime(11, 3), QTimeZone(3600)),
-        QDateTime(QDate(2024, 10, 26), QTime(11, 6), QTimeZone(3600)));
-    EventWidget testEventWidgetReccu(event2);
-    testEventWidgetReccu.setFont(serifFont);
+        "🥳 test 2", "", QDateTime(QDate(2024, 05, 18), QTime(16, 0), QTimeZone(3600)),
+        QDateTime(QDate(2024, 05, 19), QTime(13, 0), QTimeZone(3600)));
+
+    WeekView weekview;
+
+    weekview.insertEvent(event);
+    weekview.insertEvent(event2);
+
+    weekview.setFont(serifFont);
 
     w.show();
-    testEventWidget.show();
-    testEventWidgetReccu.show();
+    weekview.show();
     return a.exec();
 }

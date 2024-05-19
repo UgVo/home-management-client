@@ -18,16 +18,25 @@ set(resources_dir ${PROJECT_SOURCE_DIR}/resources)
 set(header_files 
     ${include_dir}/mainwindow.h
     ${include_dir}/eventdaywidget.h
+    ${include_dir}/daywidget.h
+    ${include_dir}/weekview.h
+    ${include_dir}/hourslateraldaywidget.h
 )
 
 set(source_files
     ${source_dir}/mainwindow.cpp
     ${source_dir}/eventdaywidget.cpp
+    ${source_dir}/daywidget.cpp
+    ${source_dir}/weekview.cpp
+    ${source_dir}/hourslateraldaywidget.cpp
 )
 
 set(form_files
     ${source_dir}/mainwindow.ui
     ${source_dir}/eventdaywidget.ui
+    ${source_dir}/daywidget.ui
+    ${source_dir}/weekview.ui
+    ${source_dir}/hourslateraldaywidget.ui
 )
 
 set(PROJECT_SOURCES
