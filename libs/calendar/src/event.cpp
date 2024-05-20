@@ -73,6 +73,11 @@ QString Event::content() const { return _content; }
 
 bool Event::isReccurent() const { return _rrule.isValid(); }
 
+bool Event::isFullDays() const {
+    if (_startTime.time() == QTime(0, 0, 0) && _endTime.time() == QTime(0, 0, 0)) return true;
+    return false;
+}
+
 QVector<QSharedPointer<Event>> Event::getReccurentInstances(QDate _begin, QDate _end) const {
     QDateTime begin(_begin, QTime(0, 0), _startTime.timeZone());
     QDateTime end(_end, QTime(23, 59), _startTime.timeZone());

@@ -20,7 +20,7 @@ class EventDayWidget : public QWidget {
 
    public:
     explicit EventDayWidget(QString content, QTime start, QTime end, bool isReccurent,
-                            QString uidEvent, QWidget *parent = nullptr);
+                            QString uidEvent, bool fullDay = false, QWidget *parent = nullptr);
     ~EventDayWidget();
     void setFont(const QFont &newFont);
 
@@ -36,6 +36,8 @@ class EventDayWidget : public QWidget {
     QTime   end() const;
     QString content() const;
 
+    QSize sizeHint() const override;
+
    protected:
     QString formatDates(const QTime &start, const QTime &end) const;
     void    resizeToDuration();
@@ -49,6 +51,7 @@ class EventDayWidget : public QWidget {
     int                 _ratioWidth;
     int                 _order;
     QString             _content;
+    bool                _fullDay;
 };
 
 #endif  // EVENTDAYWIDGET_H

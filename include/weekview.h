@@ -2,6 +2,7 @@
 #define WEEKVIEW_H
 
 #include <QLabel>
+#include <QVBoxLayout>
 #include <QWidget>
 
 #include "daywidget.h"
@@ -36,6 +37,9 @@ class WeekView : public QWidget {
     QDate                  _firstDay;
     QDate                  _lastDay;
     QFont                  _font;
+
+    QVector<QVBoxLayout *>             _fullDayLayouts;
+    QVector<QVector<EventDayWidget *>> _fullDayEvents;
 };
 
 #endif  // WEEKVIEW_H

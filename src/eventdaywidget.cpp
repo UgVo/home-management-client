@@ -2,8 +2,13 @@
 #include "eventdaywidget.h"
 
 EventDayWidget::EventDayWidget(QString content, QTime start, QTime end, bool isReccurent,
-                               QString uidEvent, QWidget *parent)
-    : QWidget(parent), ui(new Ui::EventDayWidget), _start(start), _end(end), _eventUID(uidEvent) {
+                               QString uidEvent, bool fullDay, QWidget *parent)
+    : QWidget(parent),
+      ui(new Ui::EventDayWidget),
+      _start(start),
+      _end(end),
+      _eventUID(uidEvent),
+      _fullDay(fullDay) {
     ui->setupUi(this);
 
     _ratioWidth = 0;
@@ -62,6 +67,8 @@ QTime   EventDayWidget::start() const { return _start; }
 QTime   EventDayWidget::end() const { return _end; }
 QString EventDayWidget::content() const { return _content; };
 
+QSize EventDayWidget::sizeHint() const { return (QSize(100, _periodHeight)); }
+
 QString EventDayWidget::formatDates(const QTime &start, const QTime &end) const {
     QString res;
     if (!start.isValid() && !end.isValid()) return res;
@@ -80,6 +87,10 @@ QString EventDayWidget::formatDates(const QTime &start, const QTime &end) const 
 }
 
 void EventDayWidget::resizeToDuration() {
+    if (_fullDay) {
+        setFixedHeight(_periodHeight - 1);
+        return;
+    }
     QTime startTime = _start.isValid() ? _start : QTime(0, 0);
     QTime endTime   = _end.isValid() ? _end : QTime(23, 29);
 
@@ -91,6 +102,11 @@ void EventDayWidget::resizeToDuration() {
 
 void EventDayWidget::resizeEvent(QResizeEvent *event) {
     auto height = QFontMetrics(ui->content->font()).height();
+    if (_fullDay) {
+        ui->time->hide();
+        ui->timeAlt->hide();
+        return;
+    }
 
     if (height * 2 + ui->widget->layout()->contentsMargins().bottom() +
             ui->widget->layout()->contentsMargins().top() + ui->widget->layout()->spacing() >

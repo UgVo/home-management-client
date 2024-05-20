@@ -33,6 +33,7 @@ class Event : public QObject {
     QString   uid() const;
     QString   content() const;
     bool      isReccurent() const;
+    bool      isFullDays() const;
 
     void updateContent(const QString newContent);
     void updateStartTime(const QDateTime newStart);

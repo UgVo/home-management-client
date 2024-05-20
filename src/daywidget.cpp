@@ -4,6 +4,7 @@
 DayWidget::DayWidget(QWidget *parent) : QWidget(parent), ui(new Ui::DayWidget) {
     ui->setupUi(this);
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
+    _fullwidth = 100;
 }
 
 DayWidget::~DayWidget() { delete ui; }
@@ -27,6 +28,8 @@ void DayWidget::setFont(const QFont &newFont) {
     }
     update();
 }
+
+int DayWidget::getFullWidth() const { return _fullwidth; }
 
 void DayWidget::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
@@ -55,7 +58,7 @@ void DayWidget::paintEvent(QPaintEvent *event) {
 
 void DayWidget::resizeEvent(QResizeEvent *event) {
     auto quatersSections = computeWidthEvents();
-    int  fullwidth       = (this->width() - lateralMargin * 2);
+    _fullwidth           = (this->width() - lateralMargin * 2);
 
     for (auto it = quatersSections.begin(); it != quatersSections.end(); ++it) {
         if (it->empty()) continue;
@@ -68,9 +71,9 @@ void DayWidget::resizeEvent(QResizeEvent *event) {
                     getInterval() * (start / QTime(1, 0).msecsSinceStartOfDay()) + widthBrush;
 
                 widget->setPeriodHeight(getInterval());
-                widget->setWidthInDay(fullwidth, size);
+                widget->setWidthInDay(_fullwidth, size);
                 widget->move(0, shift);
-                widget->slideLateral(fullwidth, lateralMargin, size, i);
+                widget->slideLateral(_fullwidth, lateralMargin, size, i);
             }
         }
     }
