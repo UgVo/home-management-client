@@ -7,22 +7,31 @@
     <x>0</x>
     <y>0</y>
     <width>895</width>
-    <height>709</height>
+    <height>706</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QWidget" name="headers" native="true">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
+    <widget class="QWidget" name="topWidget" native="true">
+     <layout class="QHBoxLayout" name="topLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -33,14 +42,43 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>2</number>
-      </property>
-      <property name="horizontalSpacing">
        <number>0</number>
       </property>
-      <property name="verticalSpacing">
-       <number>6</number>
-      </property>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="spacing">
+         <number>9</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="headerWidget" native="true">
+          <layout class="QHBoxLayout" name="headerLayout">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="fullDayLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+         </layout>
+        </item>
+       </layout>
+      </item>
      </layout>
     </widget>
    </item>
@@ -60,8 +98,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>875</width>
-        <height>681</height>
+        <width>884</width>
+        <height>691</height>
        </rect>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">

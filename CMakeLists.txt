@@ -21,6 +21,7 @@ set(header_files
     ${include_dir}/daywidget.h
     ${include_dir}/weekview.h
     ${include_dir}/hourslateraldaywidget.h
+    ${include_dir}/fillerhourcolumn.h
 )
 
 set(source_files
@@ -29,6 +30,7 @@ set(source_files
     ${source_dir}/daywidget.cpp
     ${source_dir}/weekview.cpp
     ${source_dir}/hourslateraldaywidget.cpp
+    ${source_dir}/fillerhourcolumn.cpp
 )
 
 set(form_files
@@ -37,6 +39,7 @@ set(form_files
     ${source_dir}/daywidget.ui
     ${source_dir}/weekview.ui
     ${source_dir}/hourslateraldaywidget.ui
+    ${source_dir}/fillerhourcolumn.ui
 )
 
 set(PROJECT_SOURCES

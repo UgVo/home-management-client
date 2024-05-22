@@ -49,7 +49,7 @@ void DayWidget::paintEvent(QPaintEvent *event) {
     for (int i = 0; i < 24; ++i) {
         painter.drawLine(0, i * interval, width, i * interval);
     }
-    painter.drawLine(0, height - 1, width, height - 1);
+    painter.drawLine(0, 24 * interval - 1, width, 24 * interval - 1);
 
     painter.setPen(penBullet);
     painter.setBrush(brushBullet);
@@ -79,7 +79,7 @@ void DayWidget::resizeEvent(QResizeEvent *event) {
     }
 }
 
-int DayWidget::getInterval() { return int(std::round(this->height() / 24.0)); }
+int DayWidget::getInterval() const { return int(std::floor(this->height() / 24.0)); }
 
 QVector<QStringList> DayWidget::computeWidthEvents() {
     QVector<QStringList> res = QVector<QStringList>(24 * 4);

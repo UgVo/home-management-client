@@ -11,13 +11,21 @@ HoursLateralDayWidget::~HoursLateralDayWidget() { delete ui; }
 
 QSize HoursLateralDayWidget::sizeHint() const {
     auto height = QFontMetrics(_font).height();
-    auto width  = QFontMetrics(_font).horizontalAdvance("12:00") + bulletRadius * 2;
+    auto width  = QFontMetrics(_font).horizontalAdvance(tr("journée")) + bulletRadius * 2;
     return QSize(width, 24 * 4 * height * 1.2);
 }
 
 void HoursLateralDayWidget::setFont(const QFont &newFont) {
     _font = newFont;
+    setFixedWidth(QFontMetrics(_font).horizontalAdvance(tr("journée")) + bulletRadius * 2);
     update();
+}
+
+int HoursLateralDayWidget::getCurrentTimePosition() const {
+    QTime current  = QTime::currentTime();
+    int   interval = getInterval();
+
+    return current.hour() * interval + (interval / 60.0 * current.minute());
 }
 
 void HoursLateralDayWidget::paintEvent(QPaintEvent *event) {
@@ -29,7 +37,7 @@ void HoursLateralDayWidget::paintEvent(QPaintEvent *event) {
 
     int height     = this->height();
     int heightText = QFontMetrics(_font).height();
-    int widthText  = QFontMetrics(_font).horizontalAdvance("12:00");
+    int widthText  = QFontMetrics(_font).horizontalAdvance(tr("journée"));
     int interval   = getInterval();
 
     float bulletCenter = current.hour() * interval + (interval / 60.0 * current.minute());
@@ -56,4 +64,4 @@ void HoursLateralDayWidget::paintEvent(QPaintEvent *event) {
     emit widthChanged(this->width());
 }
 
-int HoursLateralDayWidget::getInterval() { return int(std::round(this->height() / 24.0)); }
+int HoursLateralDayWidget::getInterval() const { return int(std::floor(this->height() / 24.0)); }

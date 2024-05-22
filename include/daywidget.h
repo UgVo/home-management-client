@@ -29,7 +29,7 @@ class DayWidget : public QWidget {
    protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
-    int  getInterval();
+    int  getInterval() const;
 
     QVector<QStringList> computeWidthEvents();
 

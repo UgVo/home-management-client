@@ -21,13 +21,14 @@ class HoursLateralDayWidget : public QWidget {
     ~HoursLateralDayWidget();
     QSize sizeHint() const override;
     void  setFont(const QFont &newFont);
+    int   getCurrentTimePosition() const;
 
    signals:
     void widthChanged(int newWidth);
 
    protected:
     void paintEvent(QPaintEvent *event) override;
-    int  getInterval();
+    int  getInterval() const;
 
    private:
     Ui::HoursLateralDayWidget *ui;

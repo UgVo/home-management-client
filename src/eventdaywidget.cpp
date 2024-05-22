@@ -92,7 +92,7 @@ void EventDayWidget::resizeToDuration() {
         return;
     }
     QTime startTime = _start.isValid() ? _start : QTime(0, 0);
-    QTime endTime   = _end.isValid() ? _end : QTime(23, 29);
+    QTime endTime   = _end.isValid() ? _end : QTime(23, 59);
 
     float lenght = (endTime.msecsSinceStartOfDay() - startTime.msecsSinceStartOfDay()) /
                    float(QTime(1, 0).msecsSinceStartOfDay());
