@@ -46,7 +46,7 @@ void DayWidget::paintEvent(QPaintEvent *event) {
     QBrush brushBullet(QColor("#4277FF"));
     painter.setPen(pen);
 
-    for (int i = 0; i < 24; ++i) {
+    for (int i = 1; i < 24; ++i) {
         painter.drawLine(0, i * interval, width, i * interval);
     }
     painter.drawLine(0, 24 * interval - 1, width, 24 * interval - 1);
