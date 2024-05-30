@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1036</width>
+    <height>928</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,7 @@
       <property name="tabPosition">
        <enum>QTabWidget::TabPosition::South</enum>
       </property>
-      <widget class="QWidget" name="tab">
+      <widget class="QWidget" name="calendar">
        <attribute name="title">
         <string>Tab 1</string>
        </attribute>
@@ -52,7 +52,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1036</width>
      <height>19</height>
     </rect>
    </property>

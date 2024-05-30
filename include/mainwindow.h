@@ -2,9 +2,11 @@
 #define HOME_MANAGEMENT_CLIENT_MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTimer>
 
 #include "apiconnector.h"
 #include "storage.h"
+#include "weekview.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -23,5 +25,7 @@ class MainWindow : public QMainWindow {
     Ui::MainWindow *ui;
     ApiConnector    api_connector;
     Storage         storage;
+    WeekView       *_weekview;
+    QTimer          _weekUpdateViewTimer;
 };
 #endif  // HOME_MANAGEMENT_CLIENT_MAINWINDOW_H

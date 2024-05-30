@@ -21,7 +21,16 @@ MainWindow::MainWindow(QWidget* parent) : QMainWindow(parent), ui(new Ui::MainWi
     QObject::connect(ui->action_UpdateCalendarEvents, &QAction::triggered, [this]() {
         api_connector.getCalendarUpdate("commun-test",
                                         [](QNetworkReply* reply) { qDebug() << reply->readAll(); });
-    });
+    QFont serifFont("Sans Serif", 11);
+    _weekview = new WeekView();
+    _weekview->setFont(serifFont);
+    ui->calendar->layout()->addWidget(_weekview);
+
+    _weekUpdateViewTimer.callOnTimeout([this]() { _weekview->updateView(); });
+    _weekUpdateViewTimer.start(60000);
+    _weekview->updateView();
+
+    updateStorage();
 }
 
 MainWindow::~MainWindow() { delete ui; }
