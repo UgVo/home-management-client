@@ -89,6 +89,7 @@ QString EventDayWidget::formatDates(const QTime &start, const QTime &end) const 
 void EventDayWidget::resizeToDuration() {
     if (_fullDay) {
         setFixedHeight(_periodHeight - 1);
+        qDebug() << this->height() << this->sizeHint();
         return;
     }
     QTime startTime = _start.isValid() ? _start : QTime(0, 0);

@@ -4,7 +4,8 @@
 FillerHourColumn::FillerHourColumn(QWidget *parent)
     : QWidget(parent), ui(new Ui::FillerHourColumn) {
     ui->setupUi(this);
-    _vshit = 0;
+    _vshit     = 0;
+    _hideWords = true;
 }
 
 FillerHourColumn::~FillerHourColumn() { delete ui; }
@@ -20,7 +21,10 @@ void FillerHourColumn::setVerticalShift(int vshift) {
     update();
 }
 
+void FillerHourColumn::hideWords(bool flag) { _hideWords = flag; }
+
 void FillerHourColumn::paintEvent(QPaintEvent *event) {
+    if (_hideWords) return;
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 

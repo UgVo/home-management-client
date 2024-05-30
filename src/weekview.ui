@@ -28,7 +28,13 @@
    </property>
    <item>
     <widget class="QWidget" name="topWidget" native="true">
-     <layout class="QHBoxLayout" name="topLayout">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <layout class="QHBoxLayout" name="layoutwidgetTop">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -42,10 +48,10 @@
        <number>0</number>
       </property>
       <property name="bottomMargin">
-       <number>0</number>
+       <number>3</number>
       </property>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_2">
+       <layout class="QVBoxLayout" name="topLayout">
         <property name="spacing">
          <number>9</number>
         </property>
@@ -70,13 +76,6 @@
           </layout>
          </widget>
         </item>
-        <item>
-         <layout class="QHBoxLayout" name="fullDayLayout">
-          <property name="spacing">
-           <number>0</number>
-          </property>
-         </layout>
-        </item>
        </layout>
       </item>
      </layout>
@@ -99,8 +98,11 @@
         <x>0</x>
         <y>0</y>
         <width>884</width>
-        <height>691</height>
+        <height>699</height>
        </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LayoutDirection::LeftToRight</enum>
       </property>
       <layout class="QHBoxLayout" name="horizontalLayout">
        <property name="spacing">

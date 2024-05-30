@@ -19,12 +19,15 @@ class DayWidget : public QWidget {
     static const int lateralMargin = 6;
     static const int widthBrush    = 1;
 
-    explicit DayWidget(QWidget *parent = nullptr);
+    explicit DayWidget(int dayIndex, QWidget *parent = nullptr);
     ~DayWidget();
     void  addEventDayWidget(EventDayWidget *eventDayWidget);
     QSize sizeHint() const override;
     void  setFont(const QFont &newFont);
     int   getFullWidth() const;
+
+   signals:
+    void widthChanged(int width, int dayIndex);
 
    protected:
     void paintEvent(QPaintEvent *event) override;
@@ -38,6 +41,7 @@ class DayWidget : public QWidget {
 
     QFont _font;
     int   _fullwidth;
+    int   _dayIndex;
 
     QMap<QString, EventDayWidget *> _childrenMap;
 };

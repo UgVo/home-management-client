@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.25)
 
 set(target home-management-client)
 project(${target} VERSION 0.1 LANGUAGES CXX)
@@ -22,6 +22,7 @@ set(header_files
     ${include_dir}/weekview.h
     ${include_dir}/hourslateraldaywidget.h
     ${include_dir}/fillerhourcolumn.h
+    ${include_dir}/fulldayswidget.h
 )
 
 set(source_files
@@ -31,6 +32,7 @@ set(source_files
     ${source_dir}/weekview.cpp
     ${source_dir}/hourslateraldaywidget.cpp
     ${source_dir}/fillerhourcolumn.cpp
+    ${source_dir}/fulldayswidget.cpp
 )
 
 set(form_files
@@ -40,6 +42,7 @@ set(form_files
     ${source_dir}/weekview.ui
     ${source_dir}/hourslateraldaywidget.ui
     ${source_dir}/fillerhourcolumn.ui
+    ${source_dir}/fulldayswidget.ui
 )
 
 set(PROJECT_SOURCES

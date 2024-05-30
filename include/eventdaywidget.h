@@ -28,7 +28,7 @@ class EventDayWidget : public QWidget {
     /// @param height height in pixel
     void setPeriodHeight(const int height);
 
-    void setWidthInDay(const int dayWidth, const int ratio);
+    void setWidthInDay(const int dayWidth, const int ratio = 1);
     void slideLateral(int dayWidth, int shift, int ratio, int order);
 
     QString uid() const;

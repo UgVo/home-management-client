@@ -20,6 +20,7 @@ class FillerHourColumn : public QWidget {
     ~FillerHourColumn();
     void setFont(QFont newfont);
     void setVerticalShift(int vshift);
+    void hideWords(bool flag);
 
    protected:
     void paintEvent(QPaintEvent *event) override;
@@ -29,6 +30,7 @@ class FillerHourColumn : public QWidget {
 
     QFont _font;
     int   _vshit;
+    bool  _hideWords;
 };
 
 #endif  // FILLERHOURCOLUMN_H

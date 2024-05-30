@@ -1,7 +1,8 @@
 #include "daywidget.h"
 #include "ui_daywidget.h"
 
-DayWidget::DayWidget(QWidget *parent) : QWidget(parent), ui(new Ui::DayWidget) {
+DayWidget::DayWidget(int dayIndex, QWidget *parent)
+    : QWidget(parent), ui(new Ui::DayWidget), _dayIndex(dayIndex) {
     ui->setupUi(this);
     this->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::MinimumExpanding);
     _fullwidth = 100;
@@ -77,6 +78,7 @@ void DayWidget::resizeEvent(QResizeEvent *event) {
             }
         }
     }
+    emit widthChanged(this->width(), _dayIndex);
 }
 
 int DayWidget::getInterval() const { return int(std::floor(this->height() / 24.0)); }

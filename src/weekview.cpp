@@ -12,27 +12,33 @@ WeekView::WeekView(QWidget *parent, int weekNumber, int numberOfDays)
     _fullDayEvents    = QVector<QVector<EventDayWidget *>>(_numberOfDays);
     _fillerHourColumn = new FillerHourColumn();
 
-    _firstDay =
-        getFirstMondayOfYear(QDate::currentDate().year()).addDays(_numberOfDays * (weekNumber - 1));
-    _lastDay = _firstDay.addDays(6);
+    _firstDay = getFirstMondayOfYear(QDate::currentDate().year()).addDays(7 * (weekNumber - 1));
+    _lastDay  = _firstDay.addDays(6);
+
+    _fulldayswidget = new FullDaysWidget(numberOfDays, _firstDay);
+
+    _dayRatios = QVector<float>(_numberOfDays, 1.0f);
 
     contentLayout->addWidget(_hoursLateral);
-    ui->topLayout->insertWidget(0, _fillerHourColumn);
+    ui->layoutwidgetTop->insertWidget(0, _fillerHourColumn);
+    ui->topLayout->addWidget(_fulldayswidget);
 
     QDate current = _firstDay;
     for (int i = 0; i < _numberOfDays; ++i) {
         _headers.emplace_back(new QLabel(locale.toString(current.addDays(i), "ddd dd MMMM")));
         _headers.last()->setAlignment(Qt::AlignCenter);
 
-        _days.emplace_back(new DayWidget());
+        _days.emplace_back(new DayWidget(i));
         _fullDayHolder.emplace_back(new QWidget());
         _fullDayHolder.last()->setLayout(new QVBoxLayout());
         _fullDayHolder.last()->layout()->setContentsMargins(0, 0, 0, 0);
         _fullDayHolder.last()->layout()->setSpacing(1);
 
         ui->headerLayout->addWidget(_headers.last());
-        ui->fullDayLayout->addWidget(_fullDayHolder.last());
+        // ui->fullDayLayout->addWidget(_fullDayHolder.last());
         contentLayout->addWidget(_days.last());
+        QObject::connect(_days.last(), &DayWidget::widthChanged, _fulldayswidget,
+                         &FullDaysWidget::updateDayWidth);
     }
 
     QObject::connect(_hoursLateral, &HoursLateralDayWidget::widthChanged,
@@ -62,6 +68,7 @@ void WeekView::setFont(const QFont &newFont) {
 
     _hoursLateral->setFont(_font);
     _fillerHourColumn->setFont(_font);
+    _fulldayswidget->setFont(_font);
     update();
 }
 
@@ -80,6 +87,12 @@ bool WeekView::insertEvent(QSharedPointer<Event> newEvent) {
         return false;
     }
 
+    if (newEvent->isFullDays()) {
+        _fulldayswidget->insertEvent(newEvent);
+        _fillerHourColumn->hideWords(false);
+        return true;
+    }
+
     for (auto current = first.date(); current <= last.date(); current = current.addDays(1)) {
         QTime startTime = current == first.date() ? first.time() : QTime();
         QTime endTime   = current == last.date() ? last.time() : QTime();
@@ -87,31 +100,39 @@ bool WeekView::insertEvent(QSharedPointer<Event> newEvent) {
         auto widget =
             new EventDayWidget(newEvent->content(), startTime, endTime, newEvent->isReccurent(),
                                newEvent->uid(), newEvent->isFullDays());
-        if (newEvent->isFullDays()) {
-            if (current != newEvent->endTime().date()) {
-                _fullDayEvents[current.dayOfWeek() - 1].push_back(widget);
-                _fullDayHolder[current.dayOfWeek() - 1]->layout()->addWidget(widget);
-                _fullDayHolder[current.dayOfWeek() - 1]->layout()->setAlignment(
-                    widget, Qt::AlignTop | Qt::AlignHCenter);
-            }
-        } else {
-            _days[current.dayOfWeek() - 1]->addEventDayWidget(widget);
-        }
+        _days[current.dayOfWeek() - 1]->addEventDayWidget(widget);
     }
     return true;
 }
 
 void WeekView::resizeEvent(QResizeEvent *event) {
-    auto width = ui->topWidget->width() - _hoursLateral->sizeHint().width();
-    for (auto elem : _headers) {
-        elem->setFixedWidth(width / _numberOfDays);
+    QVector<int> daysWidths(_numberOfDays, 0);
+
+    if (_fullDayEvents.empty()) {
+        _fulldayswidget->hide();
+        _fillerHourColumn->hideWords(true);
+    } else {
+        _fulldayswidget->show();
+        auto height = QFontMetrics(_font).height();
+        for (int i = 0; i < _fullDayEvents.size(); ++i) {
+            for (auto elem : _fullDayEvents[i]) {
+                elem->setFixedHeight(height * 1.2);
+                elem->setFixedWidth(_days[i]->getFullWidth() - DayWidget::lateralMargin);
+            }
+        }
     }
 
-    auto height = QFontMetrics(_font).height();
-    for (int i = 0; i < _fullDayEvents.size(); ++i) {
-        for (auto elem : _fullDayEvents[i]) {
-            elem->setFixedHeight(height * 1.2);
-            elem->setFixedWidth(_days[i]->getFullWidth() - DayWidget::lateralMargin);
+    if (!_dayRatios.empty()) {
+        auto width = ui->scrollAreaWidgetContents->width() - _hoursLateral->width() -
+                     ui->scrollAreaWidgetContents->layout()->spacing();
+        float max = std::accumulate(_dayRatios.begin(), _dayRatios.end(), 0.0f);
+        for (int i = 0; i < _numberOfDays; ++i) {
+            if (_dayRatios[i] != 1) {
+                int widthDay  = width * (_dayRatios[i] / max);
+                daysWidths[i] = widthDay;
+                _days[i]->setFixedWidth(widthDay);
+                _headers[i]->setFixedWidth(widthDay);
+            }
         }
     }
 
@@ -133,12 +154,40 @@ void WeekView::paintEvent(QPaintEvent *event) {
     painter.setPen(pen);
 
     for (int i = 1; i < _numberOfDays; ++i) {
-        hShift += _days[i]->width();
+        hShift += _days[i - 1]->width();
         painter.drawLine(hShift, top, hShift, height);
     }
 
     painter.drawLine(_hoursLateral->sizeHint().width() + left, top + ui->topWidget->height(),
                      this->width(), top + ui->topWidget->height());
+}
+
+void WeekView::setRatioDays(QVector<float> ratios) {
+    if (ratios.size() != _numberOfDays) return;
+    for (auto ratio : ratios) {
+        if (ratio < 1) {
+            return;
+        }
+    }
+    _dayRatios = ratios;
+}
+
+void WeekView::updateView() {
+    // TODO update _dayRatios
+    int todayWeekIndex = QDate::currentDate().dayOfWeek() - 1;
+    qDebug() << todayWeekIndex << _numberOfDays << _dayRatios.size();
+    for (int i = 0; i < _dayRatios.size(); ++i) {
+        if (i < todayWeekIndex) {
+            _dayRatios[i] = 1.0f;
+        } else if (i == todayWeekIndex) {
+            _dayRatios[i] = 2.0f;
+        } else if (i <= todayWeekIndex + 2) {
+            _dayRatios[i] = 1.5f;
+        } else {
+            _dayRatios[i] = 1.0f;
+        }
+    }
+    update();
 }
 
 QDate WeekView::getFirstMondayOfYear(int year) {
